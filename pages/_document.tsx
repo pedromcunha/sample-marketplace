@@ -84,6 +84,31 @@ class MyDocument extends Document {
         <meta property="og:image:width" content="1280" />
         <meta property="og:image:height" content="640" />
         <meta property="og:image:alt" content="Reservoir Market banner" />
+        {/* Fonts */}
+        <link
+          href="/fonts/inter/Inter-Regular.woff2?v=3.19"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+        />
+        <link
+          href="/fonts/inter/Inter-Light.woff2?v=3.19"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+        />
+        <link
+          href="/fonts/inter/Inter-SemiBold.woff2?v=3.19"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+        />
+        <link
+          href="/fonts/obvia/obvia_medium-webfont.woff2"
+          rel="preload"
+          as="font"
+          type="font/woff2"
+        />
         <body className="bg-white text-neutral-800 dark:bg-black dark:text-white">
           <Main />
           <NextScript />
