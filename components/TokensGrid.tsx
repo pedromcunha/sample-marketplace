@@ -7,6 +7,7 @@ import { useInView } from 'react-intersection-observer'
 import FormatEth from './FormatEth'
 import Masonry from 'react-masonry-css'
 import { paths } from '@reservoir0x/client-sdk'
+import Image, { ImageLoaderProps } from 'next/image'
 
 type Props = {
   tokens: SWRInfiniteResponse<
@@ -16,6 +17,10 @@ type Props = {
   collectionImage: string | undefined
   viewRef: ReturnType<typeof useInView>['ref']
   tokenCount: number
+}
+
+const imageLoader = (props: ImageLoaderProps) => {
+  return optimizeImage(props.src, props.width)
 }
 
 const TokensGrid: FC<Props> = ({
@@ -62,8 +67,9 @@ const TokensGrid: FC<Props> = ({
                   alt=""
                 />
                 {token?.image ? (
-                  <img
-                    src={optimizeImage(token?.image, 250)}
+                  <Image
+                    loader={imageLoader}
+                    src={token?.image}
                     alt={`${token?.name}`}
                     className="w-full"
                     width="250"
