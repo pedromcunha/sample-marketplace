@@ -5,10 +5,14 @@
     "prettier": "prettier --write .",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
+    "@next/bundle-analyzer": "^12.1.5",
+    "cross-env": "^7.0.3",
     "next": "latest",
+    "next-compose-plugins": "^2.2.1",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
