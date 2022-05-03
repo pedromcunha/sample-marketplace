@@ -4,8 +4,6 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from 'next'
-import Homepage from 'components/Homepage'
-import TokensMain from 'components/TokensMain'
 import { ComponentProps } from 'react'
 import { useAccount } from 'wagmi'
 import useDataDog from 'hooks/useAnalytics'
@@ -14,6 +12,7 @@ import toast from 'react-hot-toast'
 import Toast from 'components/Toast'
 import { paths } from '@reservoir0x/client-sdk'
 import setParams from 'lib/params'
+import dynamic from 'next/dynamic'
 
 // Environment variables
 // For more information about these variables
@@ -33,10 +32,6 @@ const USE_WILDCARD = process.env.NEXT_PUBLIC_USE_WILDCARD
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>
 
 const Home: NextPage<Props> = ({ mode, contractAddress, collectionId }) => {
-  const fallback: ComponentProps<typeof TokensMain>['fallback'] = {
-    collection: { collection: undefined },
-    tokens: { tokens: undefined },
-  }
   const [{ data: accountData }] = useAccount()
   useDataDog(accountData)
 
@@ -47,11 +42,21 @@ const Home: NextPage<Props> = ({ mode, contractAddress, collectionId }) => {
     return <div>There was an error</div>
   }
 
-  return (
-    <Layout navbar={{ mode, communityId: collectionId }}>
-      {mode === 'global' ? (
+  if (mode === 'global') {
+    const Homepage = dynamic(() => import('components/Homepage'))
+    return (
+      <Layout navbar={{ mode, communityId: collectionId }}>
         <Homepage />
-      ) : (
+      </Layout>
+    )
+  } else {
+    const TokensMain = dynamic(() => import('components/TokensMain'))
+    const fallback: ComponentProps<typeof TokensMain>['fallback'] = {
+      collection: { collection: undefined },
+      tokens: { tokens: undefined },
+    }
+    return (
+      <Layout navbar={{ mode, communityId: collectionId }}>
         <TokensMain
           chainId={+CHAIN_ID as ChainId}
           collectionId={contractAddress}
@@ -61,9 +66,9 @@ const Home: NextPage<Props> = ({ mode, contractAddress, collectionId }) => {
             toast.custom((t) => <Toast t={t} toast={toast} data={data} />)
           }
         />
-      )}
-    </Layout>
-  )
+      </Layout>
+    )
+  }
 }
 
 export default Home
